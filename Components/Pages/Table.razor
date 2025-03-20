@@ -1,0 +1,82 @@
+@page "/table"
+
+@rendermode InteractiveServer
+
+<PageTitle>Table</PageTitle>
+
+<h3>Přidat osobu</h3>
+
+<form>
+    <input @bind="Jmeno" type="text" placeholder="Jméno">
+    <input @bind="Prijmeni" type="text" placeholder="Příjmení">
+    <input @bind="Vek" type="number" placeholder="Věk">
+    <input @bind="Narozeni" type="text" placeholder="Datum narození">
+    <input @bind="Bydliste" type="text" placeholder="Bydliště">
+    <input @bind="Pohlavi" type="text" placeholder="Pohlaví">
+    <button type="button" @onclick="PridatOsobu">Přidat</button>
+</form>
+
+<h3>Seznam osob</h3>
+
+<table style="width:100%">
+    <thead>
+        <tr>
+            <th>Jméno</th>
+            <th>Příjmení</th>
+            <th>Věk</th>
+            <th>Datum narození</th>
+            <th>Bydliště</th>
+            <th>Pohlaví</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in clovek.list) // AUTOMATICKY SE AKTUALIZUJE
+        {
+            <tr>
+                <td>@i.Jmeno</td>
+                <td>@i.Prijmeni</td>
+                <td>@i.Vek</td>
+                <td>@i.Narozeni</td>
+                <td>@i.Bydliste</td>
+                <td>@i.Pohlavi</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private Models.Person clovek = new Models.Person("Jan", "Novák", 30, "15.3.2001", "Praha", "Muž");
+
+    // Proměnné pro formulář
+    private string Jmeno { get; set; } = "";
+    private string Prijmeni { get; set; } = "";
+    private int Vek { get; set; } = 0;
+    private string Narozeni { get; set; } = "";
+    private string Bydliste { get; set; } = "";
+    private string Pohlavi { get; set; } = "";
+
+    // Metoda pro přidání osoby do seznamu
+    private void PridatOsobu()
+    {
+        // Přidání nové osoby do listu (Blazor to automaticky překreslí)
+        clovek.list.Add((Jmeno, Prijmeni, Vek, Narozeni, Bydliste, Pohlavi));
+
+        // Resetování vstupních polí
+        Jmeno = "";
+        Prijmeni = "";
+        Vek = 0;
+        Narozeni = "";
+        Bydliste = "";
+        Pohlavi = "";
+    }
+}
+
+<style>
+    table, td, tr, thead, th {
+        border: 1px solid black;
+        text-align: center;
+    }
+    table, thead {
+        border: 3px solid black;
+    }
+</style>
